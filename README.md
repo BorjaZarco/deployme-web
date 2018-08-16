@@ -1,6 +1,6 @@
-# deployme
+# deployme_front
 
-> deployme web
+> A Vue.js project
 
 ## Build Setup
 
