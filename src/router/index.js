@@ -5,6 +5,7 @@ import deploy from '@/components/deploy'
 import login from '@/components/login'
 import signup from "@/components/signup";
 
+
 Vue.use(Router)
 
 const router = new Router({
@@ -17,7 +18,7 @@ const router = new Router({
     {
       path: '/deploy',
       name: 'deploy',
-      component: deploy
+      component: deploy,
     },
     {
       path: '/login',
@@ -32,21 +33,6 @@ const router = new Router({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some(record => record.meta.requiresAuth)) {
-//     // this route requires auth, check if logged in
-//     // if not, redirect to login page.
-//     if (!auth.loggedIn()) {
-//       next({
-//         path: '/login',
-//         query: { redirect: to.fullPath }
-//       })
-//     } else {
-//       next()
-//     }
-//   } else {
-//     next() // make sure to always call next()!
-//   }
-// })
+
 
 export default router;

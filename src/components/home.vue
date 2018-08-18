@@ -1,6 +1,12 @@
 <template>
-  <div class="hello">
-    <h1>Landing page</h1>
+  <div class="app">                                                                                                                                                                                                                                                              
+    <div class="feed-main">
+        <router-link :to="'/comics/1'">
+            <div class="start-button">START EXPLORING</div>
+        </router-link>
+    </div>  
+    
+    
   </div>
 </template>
 
@@ -9,7 +15,7 @@ export default {
   name: 'Home',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: ''
     }
   }
 }
@@ -17,18 +23,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+body {
+  margin: 0;
+  font-family: 'Oswald', sans-serif;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+
+#app {
+  font-family: 'Oswald', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
 }
 </style>
+

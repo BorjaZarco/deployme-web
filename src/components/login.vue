@@ -1,9 +1,11 @@
 <template>
     <div class="login">
-        <h1>Log In</h1>
-        <input @keypress.enter="login" type="text" v-model="username" placeholder="Usuario">
-        <input @keypress.enter="login" type="password" v-model="password" placeholder="Constraseña">
-        <button @click="login">Log in</button>
+        <div class="login login-box">
+            <h1>Log In</h1>
+            <input @keypress.enter="login" type="text" v-model="username" placeholder="Usuario">
+            <input @keypress.enter="login" type="password" v-model="password" placeholder="Constraseña">
+            <button class="login-button" @click="login">Log in</button>
+        </div>
     </div>
 </template>
 
@@ -32,5 +34,46 @@ export default  {
     }
 }
 </script>
-<style>
+
+<style scoped>
+
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 1fr;
+    background-color: #0c5170;
+    padding: 50px 0;
+}
+
+input {
+    margin: 10px;
+    height: 20px;
+    width: 300px;
+    border: solid #062b3b 1px;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.login-box {
+    background-color: #fff;
+    height: 350px;
+    padding: 50px;
+    border-radius: 50px;
+    box-shadow: 10px 10px 5px #062b3b;
+}
+
+.login-button {
+    color: #fff;
+    height: 45px;
+    width: 175px;
+    border-radius: 50px;
+    background-color: #062b3b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+}
 </style>
