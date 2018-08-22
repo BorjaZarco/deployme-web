@@ -1,7 +1,10 @@
 <template>
   <div class="app">                                                                                                                                                                                                                                                              
     <div class="feed-main">
-        <p>LANDING PAGE</p>
+        <h1>Selecciona un servicio</h1>
+        <router-link :to="'deploy'">
+            Deploy
+        </router-link>
     </div>  
     
     
@@ -27,8 +30,8 @@ body {
 }
 
 p {
-  font-size: 100vh;
-  color: black;
+  font-size: 50vh;
+  color: black
 }
 
 #app {

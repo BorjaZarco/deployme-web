@@ -18,14 +18,16 @@ export default  {
     data () {
         return {
             username: "",
-            password: ""
+            password: "",
+            token: ""
         }
     },
     methods: {
         login () {
             post('http://localhost:5000/api/login', {username: this.username, password: this.password})
             .then (res => {
-                console.log(res);
+                localStorage.token = res.data;
+                router.go(-1);
             })
             .catch ( error => {
                 console.log(error)

@@ -4,8 +4,8 @@
       <div class="grid-half">
         <ul class="nav-menu left">
             <li><router-link :to="'/'">DeployMe</router-link></li>
-            <li><router-link :to="'/deploy'">Services</router-link></li>
-            <li><router-link :to="'/'">About Us</router-link></li>
+            <li><router-link :to="'/services'">Services</router-link></li>
+            <li></li>
         </ul>
         <ul class="nav-menu right">
           <li><router-link :to="'/login'" class="user-button">Log In</router-link></li>
@@ -115,9 +115,11 @@ a {
 }
 
 .nav-menu a:hover {
-    color: rgb(226, 111, 3);
+    color: #fff;
     transition-duration: 250ms;
-    border-color   : rgb(226, 111, 3);
+    border-color: #fff;
+    background-color: #2c3e50;
+
 }
 
 .user-button {
