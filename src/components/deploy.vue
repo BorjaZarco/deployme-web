@@ -3,7 +3,7 @@
         <div class="deploy deploy-box">
             <h1>Despliega tu página en un click</h1>
             <p>Introduce tu Repo de Github</p>
-            <input type="text"  v-model="url.namefront" placeholder="Front Repositorio Github">
+            <input type="text"  v-model="url.urlfront" placeholder="Front Repositorio Github">
             <button class="deploy-button" @click="deploy">Deploy</button>
         </div>
     </div>
@@ -20,7 +20,7 @@ export default {
     },
     methods: {
         deploy(){
-            axios.post(`http://localhost:4000/api/`,this.url)
+            axios.post(`http://localhost:4000/api/deploy-front`,this.url)
             .then((res)=>{
                 console.log("Respuesta desde el Vue->ok");
             })
