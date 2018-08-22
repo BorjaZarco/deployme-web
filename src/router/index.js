@@ -5,6 +5,8 @@ import deploy from '@/components/deploy'
 import services from '@/components/services'
 import login from '@/components/login'
 import signup from "@/components/signup";
+import profile from "@/components/profile";
+
 const axios = require('axios');
 
 
@@ -37,6 +39,12 @@ const router = new Router({
       path: '/signup',
       name: 'signup',
       component: signup
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: profile,
+      meta: { requiresAuth: true }
     }
   ]
 })
