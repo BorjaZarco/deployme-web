@@ -29,15 +29,15 @@ export default  {
     },
     methods: {
         signup () {
-            if (!this.badPassword || !this.username || this.password || this.email) {
+            if (this.badPassword || !this.username || !this.password || !this.email) {
                 alert("Comprueba que todos los campos estén correctos")
             } else {
                 post('http://localhost:5000/api/users', { username: this.username, password: this.password, email: this.email })
                 .then (res => {
-                    correctSignUp();
+                    console.log('OK');
                 })
                 .catch ( error => {
-                    badSignUp();
+                    console.log('NOT OK')
                 })
                     
             }
