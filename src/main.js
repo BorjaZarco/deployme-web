@@ -18,7 +18,6 @@ const router = new VueRouter({
 })
 
 const axios = require('axios');
-
 function checkLog(){
   const config = {
     headers: {

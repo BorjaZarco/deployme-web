@@ -14,16 +14,20 @@
       </button>
       <div class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav ml-auto">
-          
           <li class="nav-item">
-            <router-link to="/login" class="nav-link">
+            <router-link v-if="isLogged" to="/login" class="nav-link">
               Log in
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/signup" class="nav-link">
+            <router-link v-if="isLogged" to="/signup" class="nav-link">
               Sign Up
             </router-link>
+          </li>
+          <li class="nav-item">
+            <button v-if="!isLogged" to="/signup" class="btn btn-danger btn-fill float-right" @click="logout">
+              Log Out
+            </button>
           </li>
         </ul>
       </div>
@@ -58,6 +62,13 @@
       },
       hideSidebar () {
         this.$sidebar.displaySidebar(false)
+      },
+      isLogged () {
+        const log = (localStorage.token !== "" || localStorage.token !== undefined);
+        return log;
+      },
+      logout() {
+        localStorage.token = "";
       }
     }
   }

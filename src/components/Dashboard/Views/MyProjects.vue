@@ -5,9 +5,10 @@
           <card>
             <template slot="header">
               <h5 class="title">Servicios</h5>
-              <p class="category">ID de los servidores con los páginas levantadas </p>
+              <p class="category"></p>
             </template>
-            <l-table :data="tableData.data"
+            <l-table v-if="hasServices"
+                     :data="tableData.data"
                      :columns="tableData.columns">
               <template slot="columns"></template>
 
@@ -20,42 +21,66 @@
                 </td>
               </template>
             </l-table>
+            <p v-if="!hasServices"> Todavía no ha levantado ninguna web. Para ello pinche <router-link to="/home/deploy">aquí</router-link></p>
           </card>
         </div>
       </div>
     </div>
 </template>
 <script>
-  import LTable from 'src/components/UIComponents/Table.vue'
-  import Card from 'src/components/UIComponents/Cards/Card.vue'
-  import Checkbox from 'src/components/UIComponents/Inputs/Checkbox.vue'
-  import ChartCard from 'src/components/UIComponents/Cards/ChartCard.vue'
-  import StatsCard from 'src/components/UIComponents/Cards/StatsCard.vue'
-  
-  const tableColumns = ['Id', '']
-  const tableData = []
-  export default {
-    components: {
-      LTable,
-      Card,
-      Checkbox,
-      ChartCard,
-      StatsCard
-    },
-    data () {
-      return {
-        tableData: {
-          columns: [...tableColumns],
-          data: [...tableData]
-        }
-      }
-    }, 
-    methods: {
-      terminate() {
-        console.log('pendiente')
+import LTable from "src/components/UIComponents/Table.vue";
+import Card from "src/components/UIComponents/Cards/Card.vue";
+import Checkbox from "src/components/UIComponents/Inputs/Checkbox.vue";
+// import ChartCard from "src/components/UIComponents/Cards/ChartCard.vue";
+// import StatsCard from "src/components/UIComponents/Cards/StatsCard.vue";
+
+import { get } from "axios";
+
+const tableColumns = ["Id", "IP"];
+const tableData = [
+  {
+    id: 1,
+    ip: "asldnfkasdnf"
+  }
+];
+export default {
+  components: {
+    Checkbox,
+    LTable,
+    Card
+    // ChartCard,
+    // StatsCard
+  },
+  data() {
+    return {
+      tableData: {
+        data: []
+      },
+      hasServices: false
+    };
+  },
+  methods: {
+    terminate() {
+      console.log("pendiente");
+    }
+  },
+  created() {
+    const config = {
+      headers: {
+        authorization: localStorage.token
       }
     }
+
+    get(`http://localhost:5000/api/users/${localStorage.username}`, config)
+      .then(res => { 
+        this.tableData.data.push( { title: res.data.ec2[0].id })
+        this.hasServices = true;
+      })
+      .catch(err => {
+        this.hasServices = false;
+      });
   }
+};
 </script>
 <style>
 </style>

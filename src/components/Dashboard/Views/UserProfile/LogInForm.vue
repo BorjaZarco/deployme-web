@@ -23,6 +23,11 @@
       </div>
 
       <div class="text-center">
+        <p>No tienes cuenta aún? <router-link to="/signup">Registrate aquí</router-link></p>
+        
+      </div>
+
+      <div class="text-center">
         <button type="submit" class="btn btn-info btn-fill float-center" @click="login()">
           Log In
         </button>
@@ -55,11 +60,12 @@
             post('http://localhost:5000/api/login', {username: this.username, password: this.password})
             .then (res => {
               localStorage.token = res.data;
-              router.push('home'); 
+              localStorage.username = this.username;
+              this.$router.push('home'); 
             })
             .catch ( error => {
               (error.response.status === 400)
-              ? this.notifyVue('error', 'Introduce un usuario y contraseña válidos')
+              ? this.notifyVue('danger', 'Introduce un usuario y contraseña válidos')
               : this.notifyVue('info', 'Se ha producido un error interno, intentalo de nuevo mas tarde') 
             })
           }

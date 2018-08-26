@@ -1,6 +1,6 @@
 <template>
   <card>
-    <h4 slot="header" class="justify-content-center">Iniciar Sesión</h4>
+    <h4 slot="header" class="justify-content-center">Registrate!</h4>
     <form class="justify-content-center">
       <div class="row justify-content-center">
         <div class="col-md-10">
@@ -27,7 +27,8 @@
           <fg-input type="password"
                     label="Contraseña"
                     placeholder=""
-                    v-model="password">
+                    v-model="password"
+                    @input="updatePassword">
           </fg-input>
         </div>
       </div>
@@ -37,7 +38,8 @@
           <fg-input type="password"
                     label="Repite Contraseña"
                     placeholder=""
-                    v-model="doubleP">
+                    v-model="doubleP"
+                    @input="updateDoubleP">
           </fg-input>
         </div>
       </div>
@@ -47,7 +49,7 @@
       </div>      
 
       <div class="text-center">
-        <button type="submit" class="btn btn-info btn-fill float-center" @click.prevent="updateProfile">
+        <button type="submit" class="btn btn-info btn-fill float-center" @click="signup">
           Sign Up
         </button>
       </div>
@@ -67,7 +69,7 @@
       return {
         username: "",
         password: "",
-        doubleP:"",
+        doubleP: "",
         email: "",
         badPassword: false
       }
@@ -77,18 +79,25 @@
         if (this.badPassword || !this.username || !this.password || !this.email) {
           this.notifyVue('warning', 'Rellena todos los campos')
         } else {
+          console.log(this.username, this.password, this.email, this.password, this.doubleP)
           post('http://localhost:5000/api/users', { username: this.username, password: this.password, email: this.email })
           .then (res => {
-            router.push('login');
+            this.$router.push('login'); 
           })
           .catch ( error => {
-            this.notifyVue('error', 'Usuario ya registrado')
+            console.log(error)
+            this.notifyVue('danger', 'Usuario ya registrado')
           })      
         }
       },
+      updateDoubleP (newDP) {
+        this.doubleP = newDP;
+      },
+      updatePassword (newP) {
+        this.password = newP;
+      },
       checkPassword() {
-        console.log('a');
-        return this.badPassword = this.password !== this.doubleP
+        return this.badPassword = password !== this.doubleP
       },
       notifyVue (type, message) {
         const notification = {
@@ -105,8 +114,12 @@
       }
     },
     watch: {
-      password: this.checkPassword,
-      doubleP: this.checkPassword
+      password: function () {
+        this.badPassword = this.password !== this.doubleP; 
+      },
+      doubleP: function () {
+        this.badPassword = this.password !== this.doubleP;
+      }
     }
 }
 </script>
