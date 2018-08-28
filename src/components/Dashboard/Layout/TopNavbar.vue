@@ -45,8 +45,11 @@
     data () {
       return {
         activeNotifications: false,
-        userIsLogged : false,
+        userIsLogged : null,
       }
+    },
+    created(){
+      this.isLogged();
     },
     methods: {
       capitalizeFirstLetter (string) {
