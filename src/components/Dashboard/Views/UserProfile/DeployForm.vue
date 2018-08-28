@@ -1,13 +1,28 @@
 <template>
   <card>
-    <h4 slot="header" class="card-title">Levanta tu Página!</h4>
+    <h4 slot="header" class="card-title">Levanta tu proyecto!</h4>
     <form>
-      <p>Introduce tu repositorio de GitHub donde tengas tu proyecto</p>
+      <p class="bold">Seleccione el tipo de proyecto a desplegar</p>
+      <div class="radios-wrapper">
+        <div class="radioFront">
+          <ul class="lista" @click="EnableFront">
+              <li><input type="radio" name="radio" value="estatica" v-model="clientProject.technology">Web estática</input></li>
+            </ul>
+        </div>
+        <div class="radioBack">
+          <ul class="lista" @click="EnableBack">
+              <li><input type="radio" name="radio" value="php" v-model="clientProject.technology">Php</input></li>
+              <li><input type="radio" name="radio" value="node" v-model="clientProject.technology">Node</input></li>
+            </ul>
+        </div>
+      </div>
+
+      <p class="bold">Introduce tu repositorio de GitHub donde tengas tu proyecto</p>
       <div class="row">
         <div class="col-md-12">
           <template v-if="mostrarDisable">
             <fg-input type="text"
-                    label="Front"
+                    label="Deploy type"
                     disabled=""
                     placeholder="Url github"
                     v-model="clientProject.urlfront">
@@ -31,22 +46,11 @@
       </div>
 
       <div class="text-center">
-        <button type="submit" class="btn btn-info btn-fill float-right" @click.prevent="deploy">
+        <button type="submit" class="btn btn-info btn-fill float-right button" @click.prevent="deploy">
           Launch!
         </button>
       </div>
       <div class="clearfix"></div>
-      <div class="radioFront">
-        <ul class="lista" @click="EnableFront">
-            <li><input type="radio" name="radio" value="estatica" v-model="clientProject.technology">Web estatica</input></li>
-          </ul>
-      </div>
-      <div class="radioBack">
-         <ul class="lista" @click="EnableBack">
-            <li><input type="radio" name="radio" value="php" v-model="clientProject.technology">Php</input></li>
-            <li><input type="radio" name="radio" value="node" v-model="clientProject.technology">Node</input></li>
-           </ul>
-      </div>
     </form>
   </card>
 </template>
@@ -71,25 +75,16 @@
     },
     methods: {
         deploy(){
-          this.showNotification('Information:','Desplegando... Esto suele tardar unos 3 minutos aproximadamente. Espere por favor.', 180)
-          if(this.mostrarFront){
-            axios.post(`http://localhost:4000/api/deploy-front`,this.clientProject)
-            .then((res)=>{
-              this.hideNotifications();
-              this.showNotification('Information:','Su proyecto ha sido desplegado!', 5)
-              this.saveInstanceInDb(res.data);
-            }).catch(error => {
-              console.log(error);
-            })
+          this.deletePosiblesSpaces();
+          if((this.clientProject.urlfront && this.clientProject.urlfront !== " ") || (this.clientProject.urlback && this.clientProject.urlback !== " ")){
+            this.showNotification('Information:','Desplegando... Esto suele tardar unos 3 minutos aproximadamente. Espere por favor.', 180)
+            if(this.mostrarFront){
+              this.deployFrontProject();
+            }else{
+              this.deployBackProject();
+            }
           }else{
-            axios.post(`http://localhost:4000/api/deploy-back`,this.clientProject)
-            .then((res)=>{
-              this.hideNotifications();
-              this.showNotification('Information:','Su proyecto ha sido desplegado!', 5)
-              this.saveInstanceInDb(res.data);
-            }).catch(error => {
-              console.log(error);
-            })
+            this.showNotification('Information:','Debe rellenar correctamente el campo de la url del repositorio', 5)
           }
             
         },
@@ -137,20 +132,61 @@
                 clean: true
             })
         },
+        deployFrontProject(){
+          axios.post(`http://localhost:4000/api/deploy-front`,this.clientProject)
+              .then((res)=>{
+                this.hideNotifications();
+                this.showNotification('Information:','Su proyecto ha sido desplegado!', 5)
+                this.saveInstanceInDb(res.data);
+              }).catch(error => {
+                console.log(error);
+              })
+        },
+        deployBackProject(){
+          axios.post(`http://localhost:4000/api/deploy-back`,this.clientProject)
+              .then((res)=>{
+                this.hideNotifications();
+                this.showNotification('Information:','Su proyecto ha sido desplegado!', 5)
+                this.saveInstanceInDb(res.data);
+              }).catch(error => {
+                console.log(error);
+              })
+        },
+        deletePosiblesSpaces(){
+          if(this.clientProject.urlfront)
+            this.clientProject.urlfront = this.clientProject.urlfront.replace(/  +/g, ' ');
+          
+          if(this.clientProject.urlback)
+            this.clientProject.urlback = this.clientProject.urlback.replace(/  +/g, ' ');
+
+        }
     }
   }
 
 </script>
 <style>
-.lista{
-  list-style: none;
-}
-.radioFront{
-  width: 50%;
-  float: left;
-}
-.radioBack{
-  width: 50%;
-  float: right;
-}
+  .radios-wrapper{
+    position: relative;
+    overflow: hidden;
+  }
+  .lista{
+    list-style: none;
+  }
+  .radioFront{
+    width: 50%;
+    float: left;
+  }
+  .radioBack{
+    width: 50%;
+    float: right;
+  }
+  .button{
+    padding: 2px 10px;
+  }
+  input[type="radio"]{
+    margin-right: 5px;
+  }
+  .bold{
+    font-weight: bold;
+  }
 </style>

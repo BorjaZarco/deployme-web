@@ -41,15 +41,15 @@
         const {name} = this.$route
         return this.capitalizeFirstLetter(name)
       },
+      userStatus(){
+        this.isLogged();
+      }
     },
     data () {
       return {
         activeNotifications: false,
         userIsLogged : null,
       }
-    },
-    created(){
-      this.isLogged();
     },
     methods: {
       capitalizeFirstLetter (string) {

@@ -22,7 +22,7 @@
                 <td><a target="_blank" :href="'http://' + row.publicIp">{{row.publicIp}}</a></td>
                 <td><a target="_blank" :href="row.gitUrl">{{row.gitUrl}}</a></td>
                 <td class="td-actions text-right">
-                  <button class="btn btn-danger btn-fill float-left delete-button" @click="terminate(row)">
+                  <button class="btn btn-danger btn-fill float-left button" @click="terminate(row)">
                     Terminate
                   </button>
                 </td>
@@ -128,7 +128,7 @@ export default {
   .bold{
     font-weight: bold;
   }
-  .delete-button{
+  .button{
     padding: 2px 10px;
   }
 </style>
