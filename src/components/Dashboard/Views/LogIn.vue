@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="container-fluid">
-      <div class="row justify-content-center">
+      <div class="row justify-content-center box-wrapper">
         <div class="col-md-4">
           <log-in-form>
           </log-in-form>
@@ -21,4 +21,8 @@
 
 </script>
 <style>
+  .content{
+    min-height: 100vh;
+    padding-top: 200px;
+  }
 </style>

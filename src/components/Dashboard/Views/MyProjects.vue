@@ -13,9 +13,10 @@
               <template slot="columns"></template>
 
               <template slot-scope="{row}">
-                <td>{{row.title}}</td>
+                <td>{{row.nameProyect}}</td>
+                <td><a target="_blank" :href="'http://' + row.publicIp">{{row.publicIp}}</a></td>
                 <td class="td-actions text-right">
-                  <button type="button" class="btn-simple btn btn-xs btn-danger" v-tooltip.top-center="terminate">
+                  <button type="button" class="btn-simple btn btn-xs btn-danger" @click="terminate(row)">
                     <i class="fa fa-times"></i>
                   </button>
                 </td>
@@ -31,10 +32,8 @@
 import LTable from "src/components/UIComponents/Table.vue";
 import Card from "src/components/UIComponents/Cards/Card.vue";
 import Checkbox from "src/components/UIComponents/Inputs/Checkbox.vue";
-// import ChartCard from "src/components/UIComponents/Cards/ChartCard.vue";
-// import StatsCard from "src/components/UIComponents/Cards/StatsCard.vue";
 
-import { get } from "axios";
+import axios from "axios";
 
 const tableColumns = ["Id", "IP"];
 const tableData = [
@@ -48,8 +47,6 @@ export default {
     Checkbox,
     LTable,
     Card
-    // ChartCard,
-    // StatsCard
   },
   data() {
     return {
@@ -60,25 +57,62 @@ export default {
     };
   },
   methods: {
-    terminate() {
-      console.log("pendiente");
+    terminate(instance) {
+      axios.post('http://localhost:4000/api/terminate-project', instance).then(response => {
+        this.deleteInstanceInDb(instance);
+      }).catch( error => {
+        console.log("error: ", error);
+      });
+    },
+    deleteInstanceInDb(instanceData){
+      const thisRouter = this.$router;
+      axios.delete(`http://localhost:5000/api/users/delete-instance/${localStorage.username}/${instanceData.instanceId}`).then(response => {
+        this.showNotification('Information:','Su proyecto ha sido eliminado!', 5)
+        const instanceIdx = this.tableData.data.findIndex(i => i.instanceId == instanceData.instanceId);
+        this.tableData.data.splice(instanceIdx, 1);
+      }).catch(err => {
+        console.log(err);
+      })
+    },
+    showNotification(title, body, duration){
+      this.$notify({
+          group: 'notification-group',
+          title: title,
+          text: body,
+          duration: duration * 1000
+      });
+    },
+    hideNotifications(){
+        this.$notify({
+            group: 'notification-group',
+            clean: true
+        })
+    },
+    getInstanceOfBd(){
+      const config = {
+        headers: {
+          authorization: localStorage.token
+        }
+      }
+
+      axios.get(`http://localhost:5000/api/users/${localStorage.username}`, config).then(res => {
+        this.tableData.data = [];
+        if(res.data.ec2.length > 0){
+          this.hasServices = true;
+          const allInstances = res.data.ec2;
+          for(let idx in allInstances){
+            this.tableData.data.push( allInstances[idx] );
+          }
+        }else{
+          this.hasServices = false;
+        }
+      }).catch(err => {
+        console.log("Error al pedir el usuario", err);
+      });
     }
   },
   created() {
-    const config = {
-      headers: {
-        authorization: localStorage.token
-      }
-    }
-
-    get(`http://localhost:5000/api/users/${localStorage.username}`, config)
-      .then(res => { 
-        this.tableData.data.push( { title: res.data.ec2[0].id })
-        this.hasServices = true;
-      })
-      .catch(err => {
-        this.hasServices = false;
-      });
+    this.getInstanceOfBd();
   }
 };
 </script>

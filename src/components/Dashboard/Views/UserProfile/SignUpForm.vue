@@ -44,6 +44,10 @@
         </div>
       </div>
 
+      <div class="text-center">
+        <p>Ya tienes cuenta? <router-link to="/login">Inicia sesión</router-link></p>
+      </div>
+
       <div class="row justify-content-center" v-if="badPassword">
         <p class="text-danger">Las contraseñas no coinciden</p>
       </div>      
@@ -77,16 +81,14 @@
     methods: {
       signup () {
         if (this.badPassword || !this.username || !this.password || !this.email) {
-          this.notifyVue('warning', 'Rellena todos los campos')
+          this.showNotification('Information:','Rellena todos los campos', 5)
         } else {
-          console.log(this.username, this.password, this.email, this.password, this.doubleP)
           post('http://localhost:5000/api/users', { username: this.username, password: this.password, email: this.email })
           .then (res => {
             this.$router.push('login'); 
           })
           .catch ( error => {
-            console.log(error)
-            this.notifyVue('danger', 'Usuario ya registrado')
+            this.showNotification('Information:','Usuario ya registrado', 5)
           })      
         }
       },
@@ -99,19 +101,20 @@
       checkPassword() {
         return this.badPassword = password !== this.doubleP
       },
-      notifyVue (type, message) {
-        const notification = {
-          template: `<span>${message}</span>`
-        }
-
-        this.$notifications.notify(
-          {
-            component: notification,
-            horizontalAlign: 'right',
-            verticalAlign: 'top',
-            type: type
+      showNotification(title, body, duration){
+        this.$notify({
+            group: 'notification-group',
+            title: title,
+            text: body,
+            duration: duration * 1000
+        });
+      },
+      hideNotifications(){
+          this.$notify({
+              group: 'notification-group',
+              clean: true
           })
-      }
+      },
     },
     watch: {
       password: function () {

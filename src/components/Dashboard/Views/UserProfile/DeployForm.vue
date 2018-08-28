@@ -9,22 +9,22 @@
             <fg-input type="text"
                     label="Front"
                     disabled=""
-                    placeholder="Home Address"
-                    v-model="url.urlfront">
+                    placeholder="Url github"
+                    v-model="clientProject.urlfront">
             </fg-input>
           </template>
           <template v-if="mostrarFront">
             <fg-input type="text"
                     label="Front"
                     placeholder="Home Address"
-                    v-model="url.urlfront">
+                    v-model="clientProject.urlfront">
             </fg-input>
           </template>
           <template v-if="mostrarBack">
             <fg-input type="text"
                     label="Back"
                     placeholder="Back Address"
-                    v-model="url.urlback">
+                    v-model="clientProject.urlback">
             </fg-input>
           </template>
         </div>
@@ -38,13 +38,13 @@
       <div class="clearfix"></div>
       <div class="radioFront">
         <ul class="lista" @click="EnableFront">
-            <li><input type="radio" name="radio" value="estatica" v-model="tecnologia">Web estatica</input></li>
+            <li><input type="radio" name="radio" value="estatica" v-model="clientProject.technology">Web estatica</input></li>
           </ul>
       </div>
       <div class="radioBack">
          <ul class="lista" @click="EnableBack">
-            <li><input type="radio" name="radio" value="php" v-model="tecnologia">Php</input></li>
-            <li><input type="radio" name="radio" value="node" v-model="tecnologia">Node</input></li>
+            <li><input type="radio" name="radio" value="php" v-model="clientProject.technology">Php</input></li>
+            <li><input type="radio" name="radio" value="node" v-model="clientProject.technology">Node</input></li>
            </ul>
       </div>
     </form>
@@ -63,8 +63,7 @@
     },
     data(){
         return {
-            tecnologia:'',
-            url:{},
+            clientProject:{},
             mostrarFront:false,
             mostrarBack:false,
             mostrarDisable:true
@@ -72,15 +71,24 @@
     },
     methods: {
         deploy(){
+          this.showNotification('Information:','Desplegando... Esto suele tardar unos 3 minutos aproximadamente. Espere por favor.', 180)
           if(this.mostrarFront){
-              axios.post(`http://localhost:4000/api/deploy-front`,this.url,this.tecnologia)
+            axios.post(`http://localhost:4000/api/deploy-front`,this.clientProject)
             .then((res)=>{
-                console.log("Desplegando Front...");
+              this.hideNotifications();
+              this.showNotification('Information:','Su proyecto ha sido desplegado!', 5)
+              this.saveInstanceInDb(res.data);
+            }).catch(error => {
+              console.log(error);
             })
           }else{
-            axios.post(`http://localhost:4000/api/deploy-back`,this.url,this.tecnologia)
+            axios.post(`http://localhost:4000/api/deploy-back`,this.clientProject)
             .then((res)=>{
-                console.log("Desplegando Back...");
+              this.hideNotifications();
+              this.showNotification('Information:','Su proyecto ha sido desplegado!', 5)
+              this.saveInstanceInDb(res.data);
+            }).catch(error => {
+              console.log(error);
             })
           }
             
@@ -96,8 +104,39 @@
           this.mostrarFront=false;
           this.mostrarBack=true;
          
-        }
+        },
+        saveInstanceInDb(instanceData){
+          const thisRouter = this.$router;
+          const config = {
+            headers: {
+              authorization: localStorage.token
+            }
+          }
+          
+          const data = {
+            ec2 : instanceData
+          }
+          axios.post(`http://localhost:5000/api/users/add-instance/${localStorage.username}`, data ).then( response => {
+            thisRouter.push('my-projects');
+          }).catch(err => {
+            console.log("error al guardar la instancia: ", err);
+          })
+        },
 
+        showNotification(title, body, duration){
+          this.$notify({
+              group: 'notification-group',
+              title: title,
+              text: body,
+              duration: duration * 1000
+          });
+        },
+        hideNotifications(){
+            this.$notify({
+                group: 'notification-group',
+                clean: true
+            })
+        },
     }
   }
 
