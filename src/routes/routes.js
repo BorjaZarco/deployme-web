@@ -30,13 +30,13 @@ const routes = [
         path: 'deploy',
         name: 'Deploy',
         component: Deploy,
-        // meta: { requiresAuth: true }
+        meta: { requiresAuth: true }
       },
       {
         path: 'my-projects',
         name: 'My Projects',
         component: MyProjects,
-        // meta: { requiresAuth: true }
+        meta: { requiresAuth: true }
       }     
     ]
   },

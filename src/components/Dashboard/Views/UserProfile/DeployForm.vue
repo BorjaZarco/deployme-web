@@ -7,7 +7,7 @@
         <div class="col-md-12">
           <fg-input type="text"
                     label="Front"
-                    placeholder="Home Address"
+                    placeholder="Url github"
                     v-model="url.urlfront">
           </fg-input>
         </div>
@@ -32,16 +32,53 @@
     },
     data(){
         return {
-            url:{}
+            url:{},
         }
     },
     methods: {
         deploy(){
-            axios.post(`http://localhost:4000/api/deploy-front`,this.url)
-            .then((res)=>{
-                console.log("Respuesta desde el Vue->ok");
+          this.showNotification('Information:','Desplegando... Esto suele tardar unos 3 minutos aproximadamente. Espere por favor.', 180)
+          axios.post(`http://localhost:4000/api/deploy-front`,this.url)
+          .then((res)=>{
+            this.hideNotifications();
+            this.showNotification('Information:','Su proyecto ha sido desplegado!', 5)
+            this.saveInstanceInDb(res.data);
+          }).catch(error => {
+            console.log(error);
+          })
+        },
+        saveInstanceInDb(instanceData){
+          const thisRouter = this.$router;
+          const config = {
+            headers: {
+              authorization: localStorage.token
+            }
+          }
+          
+          const data = {
+            ec2 : instanceData
+          }
+          axios.post(`http://localhost:5000/api/users/add-instance/${localStorage.username}`, data ).then( response => {
+            thisRouter.push('my-projects');
+          }).catch(err => {
+            console.log("error al guardar la instancia: ", err);
+          })
+        },
+
+        showNotification(title, body, duration){
+          this.$notify({
+              group: 'notification-group',
+              title: title,
+              text: body,
+              duration: duration * 1000
+          });
+        },
+        hideNotifications(){
+            this.$notify({
+                group: 'notification-group',
+                clean: true
             })
-        }
+        },
 
     }
   }

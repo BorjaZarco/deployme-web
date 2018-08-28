@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
+import Notifications from 'vue-notification'
 
 // LightBootstrap plugin
 import LightBootstrap from './light-bootstrap-main'
@@ -10,6 +11,7 @@ import routes from './routes/routes'
 // plugin setup
 Vue.use(VueRouter)
 Vue.use(LightBootstrap)
+Vue.use(Notifications)
 
 // configure router
 const router = new VueRouter({
@@ -27,7 +29,6 @@ function checkLog(){
   return axios.get('http://localhost:5000/api/login' ,config)
   .then(res => {
     return true
-    
   }).catch( err => {
     return false
   });

@@ -269,6 +269,15 @@
           ]
         }
       }
+    },
+    methods: {
+      
+    },
+    created(){
+
+    },
+    mounted(){
+      
     }
   }
 </script>

@@ -15,17 +15,17 @@
       <div class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <router-link v-if="isLogged" to="/login" class="nav-link">
+            <router-link v-if="userIsLogged" to="/login" class="nav-link">
               Log in
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link v-if="isLogged" to="/signup" class="nav-link">
+            <router-link v-if="userIsLogged" to="/signup" class="nav-link">
               Sign Up
             </router-link>
           </li>
           <li class="nav-item">
-            <button v-if="!isLogged" to="/signup" class="btn btn-danger btn-fill float-right" @click="logout">
+            <button v-if="!userIsLogged" to="/signup" class="btn btn-danger btn-fill float-right" @click="logout">
               Log Out
             </button>
           </li>
@@ -40,11 +40,12 @@
       routeName () {
         const {name} = this.$route
         return this.capitalizeFirstLetter(name)
-      }
+      },
     },
     data () {
       return {
-        activeNotifications: false
+        activeNotifications: false,
+        userIsLogged : false,
       }
     },
     methods: {
@@ -63,12 +64,13 @@
       hideSidebar () {
         this.$sidebar.displaySidebar(false)
       },
-      isLogged () {
-        const log = (localStorage.token !== "" || localStorage.token !== undefined);
-        return log;
+      isLogged() {
+        localStorage.token !== "" || localStorage.token !== undefined ? this.userIsLogged = true : this.userIsLogged = false; 
       },
       logout() {
         localStorage.token = "";
+        this.isLogged();
+        this.$router.push('Landing'); 
       }
     }
   }

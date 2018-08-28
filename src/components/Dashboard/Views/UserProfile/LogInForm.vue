@@ -24,7 +24,6 @@
 
       <div class="text-center">
         <p>No tienes cuenta aún? <router-link to="/signup">Registrate aquí</router-link></p>
-        
       </div>
 
       <div class="text-center">
@@ -53,37 +52,37 @@
         }
     },
     methods: {
-        login () {
-          if (!this.username || !this.password) {
-            this.notifyVue('warning', 'Comprueba que todos los campos sean correctos')
-          } else {
-            post('http://localhost:5000/api/login', {username: this.username, password: this.password})
-            .then (res => {
-              localStorage.token = res.data;
-              localStorage.username = this.username;
-              this.$router.push('home'); 
-            })
-            .catch ( error => {
-              (error.response.status === 400)
-              ? this.notifyVue('danger', 'Introduce un usuario y contraseña válidos')
-              : this.notifyVue('info', 'Se ha producido un error interno, intentalo de nuevo mas tarde') 
-            })
-          }
-        },
-
-        notifyVue (type, message) {
-        const notification = {
-          template: `<span>${message}</span>`
-        }
-
-        this.$notifications.notify(
-          {
-            component: notification,
-            horizontalAlign: 'right',
-            verticalAlign: 'top',
-            type: type
+      login() {
+        if (!this.username || !this.password) {
+          this.showNotification('Information:', 'Comprueba que todos los campos sean correctos', 3);
+        } else {
+          post('http://localhost:5000/api/login', {username: this.username, password: this.password})
+          .then (res => {
+            localStorage.token = res.data;
+            localStorage.username = this.username;
+            this.$router.push('home'); 
           })
-      }
+          .catch ( error => {
+            (error.response.status === 400)
+            ? this.showNotification('Information:', 'Introduce un usuario y contraseña válidos', 3)
+            : this.showNotification('Information:', 'Se ha producido un error interno, intentalo de nuevo mas tarde', 3);
+          })
+        }
+      },
+      showNotification(title, body, duration){
+        this.$notify({
+            group: 'notification-group',
+            title: title,
+            text: body,
+            duration: duration * 1000
+        });
+      },
+      hideNotifications(){
+          this.$notify({
+              group: 'notification-group',
+              clean: true
+          })
+      },
     }
 }
 </script>

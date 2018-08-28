@@ -11,8 +11,11 @@
       <div class="copyright text-center">
         &copy; Coded with
         <i class="fa fa-heart heart"></i> by
-        <a href="https://github.com/cristijora" target="_blank">Cristi Jora</a>.
-        Designed by <a href="https://www.creative-tim.com/?ref=pdf-vuejs" target="_blank">Creative Tim</a>.
+        <a href="https://github.com/BorjaZarco" target="_blank">Borja</a>,
+        <a href="https://github.com/SamuelLopezMartel" target="_blank">Samuel</a>,
+        <a href="https://github.com/apemarr" target="_blank">Adrian</a> and
+        <a href="https://github.com/sakdev" target="_blank">Isaac</a>
+        as <a href="" target="_blank">DeployMe Team</a>.
       </div>
     </div>
   </footer>
