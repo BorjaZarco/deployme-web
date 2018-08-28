@@ -7,6 +7,7 @@
         <div class="radioFront">
           <ul class="lista" @click="EnableFront">
               <li><input type="radio" name="radio" value="estatica" v-model="clientProject.technology">Web estática</input></li>
+              <li><input type="radio" name="radio" value="webpack" v-model="clientProject.technology">Web con webpack</input></li>
             </ul>
         </div>
         <div class="radioBack">
