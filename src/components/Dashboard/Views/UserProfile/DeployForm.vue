@@ -2,7 +2,7 @@
   <card>
     <h4 slot="header" class="card-title">Levanta tu Página!</h4>
     <form>
-      <p>Introduce tu repositorio de GitHub donde tengas la página</p>
+      <p>Introduce tu repositorio de GitHub donde tengas tu proyecto</p>
       <div class="row">
         <div class="col-md-12">
           <template v-if="mostrarDisable">

@@ -4,20 +4,26 @@
        <div class="col-md-12">
           <card>
             <template slot="header">
-              <h5 class="title">Servicios</h5>
+              <h5 class="title">Proyectos</h5>
               <p class="category"></p>
             </template>
             <l-table v-if="hasServices"
                      :data="tableData.data"
                      :columns="tableData.columns">
-              <template slot="columns"></template>
 
+              <template v-if="hasServices" class="headers" slot="columns">
+                <td class="bold">Project name</td>
+                <td class="bold">Public ip</td>
+                <td class="bold">Url project</td>
+                <td class="bold">Actions</td>
+              </template>
               <template slot-scope="{row}">
                 <td>{{row.nameProyect}}</td>
                 <td><a target="_blank" :href="'http://' + row.publicIp">{{row.publicIp}}</a></td>
+                <td><a target="_blank" :href="row.gitUrl">{{row.gitUrl}}</a></td>
                 <td class="td-actions text-right">
-                  <button type="button" class="btn-simple btn btn-xs btn-danger" @click="terminate(row)">
-                    <i class="fa fa-times"></i>
+                  <button class="btn btn-danger btn-fill float-left delete-button" @click="terminate(row)">
+                    Terminate
                   </button>
                 </td>
               </template>
@@ -70,6 +76,7 @@ export default {
         this.showNotification('Information:','Su proyecto ha sido eliminado!', 5)
         const instanceIdx = this.tableData.data.findIndex(i => i.instanceId == instanceData.instanceId);
         this.tableData.data.splice(instanceIdx, 1);
+        this.tableData.data.length == 0 ? this.hasServices = true : this.hasServices = false;
       }).catch(err => {
         console.log(err);
       })
@@ -116,5 +123,12 @@ export default {
   }
 };
 </script>
+  
 <style>
+  .bold{
+    font-weight: bold;
+  }
+  .delete-button{
+    padding: 2px 10px;
+  }
 </style>
