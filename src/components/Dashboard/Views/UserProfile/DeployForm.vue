@@ -208,15 +208,6 @@ export default {
         clean: true
       });
     },
-    isGit(){
-      console.log(this.clientProject.urlfront ,this.clientProject.urlfront.includes(".git"))
-      if(this.clientProject.urlfront){
-        return this.clientProject.urlfront.includes(".git")
-      }
-      if(this.clientProject.urlback){
-        return this.clientProject.urlback.includes(".git")
-      }
-    },
     deployFrontProject() {
       axios.post(`http://34.247.235.142:4000/api/deploy-front`, this.clientProject)
         .then(res => {
