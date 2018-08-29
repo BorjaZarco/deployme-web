@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="row">
-      <div class="col-xl-3 col-md-12 hero">
+      <div class="col-xl-12 col-md-12 hero">
         <img src="static/img/landing-image.jpg">
         <div class="hero-text">
           <h1>Tu creas, nosotros desplegamos</h1>
@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xl-3 col-md-4">
+      <div class="col-xl-4 col-md-4">
         <stats-card>
           <div slot="header" class="icon-warning">
             <i class="nc-icon nc-chart text-warning"></i>
@@ -27,7 +27,7 @@
         </stats-card>
       </div>
 
-      <div class="col-xl-3 col-md-4">
+      <div class="col-xl-4 col-md-4">
           <stats-card>
             <div slot="header" class="icon-danger">
               <i class="nc-icon nc-vector text-danger"></i>
@@ -42,7 +42,7 @@
           </stats-card>
         </div>
 
-      <div class="col-xl-3 col-md-4">
+      <div class="col-xl-4 col-md-4">
         <stats-card>
           <div slot="header" class="icon-info">
             <i class="nc-icon nc-favourite-28 text-primary"></i>
@@ -89,10 +89,7 @@
 <style scoped>
 .hero {
   overflow: hidden;
-  max-width: 890px;
   margin: 0 15px 15px 0;
-  width: 100%;
-  height: 100%;
   position: relative;
   text-align: center;
 }

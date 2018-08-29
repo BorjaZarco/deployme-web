@@ -116,10 +116,6 @@ export default {
     };
   },
   methods: {
-    fakeDeploy() {
-      this.deployInProcess = true;
-      setTimeout( () => {this.deployInProcess = false}, 5000);
-    },
     deploy() {
       this.deletePosiblesSpaces();
       if ( (this.clientProject.urlfront && this.clientProject.urlfront !== " ") || (this.clientProject.urlback && this.clientProject.urlback !== " ")) {
@@ -189,6 +185,8 @@ export default {
       });
     },
     deployFrontProject() {
+      console.log("a");
+      
       axios.post(`http://localhost:4000/api/deploy-front`, this.clientProject)
         .then(res => {
           this.hideNotifications();
