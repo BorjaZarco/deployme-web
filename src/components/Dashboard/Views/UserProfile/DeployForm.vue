@@ -29,14 +29,14 @@
                       label="Deploy type"
                       disabled=""
                       placeholder="Url github"
-                      v-model="clientProject.urlfront">
+                      v-model="url">
               </fg-input>
             </template>
             <template v-if="mostrarFront">
               <fg-input type="text"
                       label="Front"
                       placeholder="Home Address"
-                      v-model="clientProject.urlfront">
+                      v-model="url">
               </fg-input>
             </template>
             <template v-if="mostrarBack">
@@ -49,8 +49,15 @@
           </div>
         </div>
 
+        <div class="row justify-content-center" v-if="!validGit">
+          <p class="text-danger">Introduce un repo válido</p>
+        </div>  
+
         <div class="text-center">
-          <button type="submit" class="btn btn-info btn-fill float-right button" @click.prevent="deploy">
+          <button class="btn btn-info btn-fill float-right button"
+                  @click.prevent="deploy"
+                  type="submit"
+                  :disabled="!validGit">
             Launch!
           </button>
         </div>
@@ -77,6 +84,10 @@
 import Card from "src/components/UIComponents/Cards/Card.vue";
 import PRadio from "src/components/UIComponents/Inputs/Radio.vue";
 import axios from "axios";
+
+var isGitUrl = require('is-git-url');
+
+const gitRegex = new RegExp("((git|ssh|http(s)?)|(git@[\w\.]+))(:(//)?)([\w\.@\:/\-~]+)(\.git)(/)?");
 
 const serviceData = {
   estatica: 
@@ -108,11 +119,13 @@ export default {
     return {
       clientProject: {},
       service: "",
+      url: "",
       mostrarFront: false,
       mostrarBack: false,
       mostrarDisable: true,
       serviceInfo: "", 
-      deployInProcess: false
+      deployInProcess: false, 
+      validGit: false
     };
   },
   methods: {
@@ -120,7 +133,7 @@ export default {
       this.deletePosiblesSpaces();
       if ( (this.clientProject.urlfront && this.clientProject.urlfront !== " ") || (this.clientProject.urlback && this.clientProject.urlback !== " ")) {
         this.showNotification(
-          "Information:",
+          "Info:",
           "Desplegando... Esto suele tardar unos 3 minutos aproximadamente. Espere por favor.",
           180
         );
@@ -132,7 +145,7 @@ export default {
         }
       } else {
         this.showNotification(
-          "Information:",
+          "Info:",
           "Debe rellenar correctamente el campo de la url del repositorio",
           5
         );
@@ -165,8 +178,13 @@ export default {
           this.deployInProcess = false;
         })
         .catch(err => {
-          console.log("error al guardar la instancia: ", err);
           this.deployInProcess = false;
+          this.showError(
+            "Error:",
+            "Fallo al guardar la instancia en la base de datos",
+            5
+          );
+          console.log("error al guardar la instancia: ", err);
         });
     },
 
@@ -178,20 +196,28 @@ export default {
         duration: duration * 1000
       });
     },
+
+    showError(title, body, duration) {
+      this.$notify({
+        group: "notification-group",
+        title: title,
+        text: body,
+        type: 'error',
+        duration: duration * 1000
+      });
+    },
     hideNotifications() {
       this.$notify({
         group: "notification-group",
         clean: true
       });
     },
-    deployFrontProject() {
-      console.log("a");
-      
+    deployFrontProject() {     
       axios.post(`http://localhost:4000/api/deploy-front`, this.clientProject)
         .then(res => {
           this.hideNotifications();
           this.showNotification(
-            "Information:",
+            "Info:",
             "Su proyecto ha sido desplegado!",
             5
           );
@@ -200,6 +226,11 @@ export default {
         .catch(error => {
           console.log(error);
           this.deployInProcess = false;
+          this.showError(
+            "Error:",
+            "Fallo al desplegar el proyecto, intentelo de nuevo mas tarde",
+            5
+          );
         });
     },
     deployBackProject() {
@@ -207,7 +238,7 @@ export default {
         .then(res => {
           this.hideNotifications();
           this.showNotification(
-            "Information:",
+            "Info:",
             "Su proyecto ha sido desplegado!",
             5
           );
@@ -216,7 +247,11 @@ export default {
         .catch(error => {
           console.log(error);
           this.deployInProcess = false;
-
+          this.showError(
+            "Error:",
+            "Fallo al desplegar el proyecto, intentelo de nuevo mas tarde",
+            5
+          );
         });
     },
     deletePosiblesSpaces() {
@@ -229,8 +264,18 @@ export default {
   },
   watch: {
     service: function () {
-      this.serviceInfo = serviceData[this.service],
-      this.clientProject.technology = this.service
+      this.serviceInfo = serviceData[this.service];
+      this.clientProject.technology = this.service;
+    },
+    url: function () {
+      if (this.mostrarFront) {
+        this.validGit = isGitUrl(this.url);
+        this.clientProject.urlfront = this.url;
+      } 
+      if (this.mostrarBack) {
+        this.validGit = isGitUrl(this.url);
+        this.clientProject.urlback = this.url;
+      } 
     }
   }
 };

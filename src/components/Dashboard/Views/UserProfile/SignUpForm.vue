@@ -1,6 +1,6 @@
 <template>
   <card>
-    <h4 slot="header" class="justify-content-center">Registrate!</h4>
+    <h4 slot="header" class="text-center">Registrate!</h4>
     <form class="justify-content-center">
       <div class="row justify-content-center">
         <div class="col-md-10">
@@ -21,6 +21,10 @@
           </fg-input>
         </div>
       </div>
+      
+      <div class="row justify-content-center" v-if="badEmail">
+        <p class="text-danger">Introduce un email válido</p>
+      </div>      
 
       <div class="row justify-content-center">
         <div class="col-md-10">
@@ -32,6 +36,10 @@
           </fg-input>
         </div>
       </div>
+
+      <div class="row justify-content-center" v-if="shortPassword">
+        <p class="text-danger">La contraseña ha de tener un mínimo de 8 caracteres</p>
+      </div>  
 
       <div class="row justify-content-center">
         <div class="col-md-10">
@@ -53,7 +61,10 @@
       </div>      
 
       <div class="text-center">
-        <button type="submit" class="btn btn-info btn-fill float-center" @click="signup">
+        <button type="submit" 
+                class="btn btn-info btn-fill float-center" 
+                :disabled="badPassword || shortPassword || badEmail"
+                @click="signup">
           Sign Up
         </button>
       </div>
@@ -75,7 +86,9 @@
         password: "",
         doubleP: "",
         email: "",
-        badPassword: false
+        badPassword: false,
+        shortPassword: false, 
+        badEmail: false
       }
     },
     methods: {
@@ -118,10 +131,15 @@
     },
     watch: {
       password: function () {
-        this.badPassword = this.password !== this.doubleP; 
+        this.badPassword = this.password !== this.doubleP;
+        this.shortPassword = this.password.length < 8 ;
       },
       doubleP: function () {
         this.badPassword = this.password !== this.doubleP;
+      }, 
+      email: function () {
+        var re = /^(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
+        this.badEmail =  !(re.test(this.email));   
       }
     }
 }
