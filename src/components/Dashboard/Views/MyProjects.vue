@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     terminate(instance) {
-      axios.post('http://localhost:4000/api/terminate-project', instance).then(response => {
+      axios.post('http://34.247.235.142:4000/api/terminate-project', instance).then(response => {
         this.deleteInstanceInDb(instance);
       }).catch( error => {
         console.log("error: ", error);
@@ -72,11 +72,11 @@ export default {
     },
     deleteInstanceInDb(instanceData){
       const thisRouter = this.$router;
-      axios.delete(`http://localhost:5000/api/users/delete-instance/${localStorage.username}/${instanceData.instanceId}`).then(response => {
+      axios.delete(`http://54.171.47.46:5000/api/users/delete-instance/${localStorage.username}/${instanceData.instanceId}`).then(response => {
         this.showNotification('Information:','Su proyecto ha sido eliminado!', 5)
         const instanceIdx = this.tableData.data.findIndex(i => i.instanceId == instanceData.instanceId);
         this.tableData.data.splice(instanceIdx, 1);
-        this.tableData.data.length == 0 ? this.hasServices = true : this.hasServices = false;
+        this.getInstancesOfBd();
       }).catch(err => {
         console.log(err);
       })
@@ -95,16 +95,16 @@ export default {
             clean: true
         })
     },
-    getInstanceOfBd(){
+    getInstancesOfBd(){
       const config = {
         headers: {
           authorization: localStorage.token
         }
       }
 
-      axios.get(`http://localhost:5000/api/users/${localStorage.username}`, config).then(res => {
+      axios.get(`http://54.171.47.46:5000/api/users/${localStorage.username}`, config).then(res => {
         this.tableData.data = [];
-        if(res.data.ec2.length > 0 && Object.keys(res.data.ec2[0]) > 0){
+        if(res.data.ec2.length > 0){
           this.hasServices = true;
           const allInstances = res.data.ec2;
           for(let idx in allInstances){
@@ -119,7 +119,7 @@ export default {
     }
   },
   created() {
-    this.getInstanceOfBd();
+    this.getInstancesOfBd();
   }
 };
 </script>

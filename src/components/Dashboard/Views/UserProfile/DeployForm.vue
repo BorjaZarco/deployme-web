@@ -8,13 +8,13 @@
           <div class="radioFront">
             <ul class="lista" @click="EnableFront">
                 <li><input type="radio" name="radio" value="estatica" v-model="service">Web estática</li>
-                <li><input type="radio" name="radio" value="webpack" v-model="service">Web con webpack</li>
+                 <!--<li><input type="radio" name="radio" value="webpack" v-model="service">Web con webpack</li>-->
               </ul>
           </div>
           <div class="radioBack">
             <ul class="lista" @click="EnableBack">
-                <li><input type="radio" name="radio" value="php" v-model="service">Php</li>
-                <li><input type="radio" name="radio" value="node" v-model="service">Node</li>
+                <!--<li><input type="radio" name="radio" value="php" v-model="service">Php</li>-->
+                <!--<li><input type="radio" name="radio" value="node" v-model="service">Node</li>-->
               </ul>
           </div>
         </div>
@@ -80,11 +80,7 @@ import axios from "axios";
 
 const serviceData = {
   estatica: 
-  `Si tu proyecto esta realizado sobre algun tipo de framework de JavaScript
-   asegurese de construir su proyeto y que su repositorio de github contenga la carpeta 
-   \"dist\" una vez generada dicha construcción 
-   \n En caso de que su proyecto sea una web
-   estática simple, únicamente debe copiar el link del repositorio`,
+  `Para probar la funcionalidad, puede utilizar este proyecto de github: \n https://github.com/sakdev/TheFox.git`,
   webpack: 
   ``,
 
@@ -118,24 +114,33 @@ export default {
   methods: {
     deploy() {
       this.deletePosiblesSpaces();
-      if ( (this.clientProject.urlfront && this.clientProject.urlfront !== " ") || (this.clientProject.urlback && this.clientProject.urlback !== " ")) {
+      console.log(this.isGit())
+      if( !this.isGit() ){
         this.showNotification(
-          "Information:",
-          "Desplegando... Esto suele tardar unos 3 minutos aproximadamente. Espere por favor.",
-          180
-        );
-        this.deployInProcess = true;
-        if (this.mostrarFront) {
-          this.deployFrontProject();
+            "Information:",
+            "Debe rellenar con una url de un repositorio",
+            5
+          );
+      }else{
+        if ((this.clientProject.urlfront && this.clientProject.urlfront !== " ") || (this.clientProject.urlback && this.clientProject.urlback !== " ")) {
+          this.showNotification(
+            "Information:",
+            "Desplegando... Esto suele tardar unos 3 minutos aproximadamente. Espere por favor.",
+            180
+          );
+          this.deployInProcess = true;
+          if (this.mostrarFront) {
+            this.deployFrontProject();
+          } else {
+            this.deployBackProject();
+          }
         } else {
-          this.deployBackProject();
+          this.showNotification(
+            "Information:",
+            "Debe rellenar correctamente el campo de la url del repositorio",
+            5
+          );
         }
-      } else {
-        this.showNotification(
-          "Information:",
-          "Debe rellenar correctamente el campo de la url del repositorio",
-          5
-        );
       }
     },
     EnableFront() {
@@ -159,7 +164,7 @@ export default {
       const data = {
         ec2: instanceData
       };
-      axios.post(`http://localhost:5000/api/users/add-instance/${localStorage.username}`,data)
+      axios.post(`http://54.171.47.46:5000/api/users/add-instance/${localStorage.username}`,data)
         .then(response => {
           thisRouter.push("my-projects");
           this.deployInProcess = false;
@@ -184,10 +189,17 @@ export default {
         clean: true
       });
     },
+    isGit(){
+      console.log(this.clientProject.urlfront ,this.clientProject.urlfront.includes(".git"))
+      if(this.clientProject.urlfront){
+        return this.clientProject.urlfront.includes(".git")
+      }
+      if(this.clientProject.urlback){
+        return this.clientProject.urlback.includes(".git")
+      }
+    },
     deployFrontProject() {
-      console.log("a");
-      
-      axios.post(`http://localhost:4000/api/deploy-front`, this.clientProject)
+      axios.post(`http://34.247.235.142:4000/api/deploy-front`, this.clientProject)
         .then(res => {
           this.hideNotifications();
           this.showNotification(
@@ -203,7 +215,7 @@ export default {
         });
     },
     deployBackProject() {
-      axios.post(`http://localhost:4000/api/deploy-back`, this.clientProject)
+      axios.post(`http://34.247.235.142:4000/api/deploy-back`, this.clientProject)
         .then(res => {
           this.hideNotifications();
           this.showNotification(
