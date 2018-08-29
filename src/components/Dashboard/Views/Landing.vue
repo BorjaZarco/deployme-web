@@ -93,12 +93,15 @@
   margin: 0 15px 15px 0;
   width: 100%;
   height: 100%;
+  position: relative;
+  text-align: center;
 }
 
 .hero-text {
-  position: relative;
+  position: absolute;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%)
 }
 
 </style>
