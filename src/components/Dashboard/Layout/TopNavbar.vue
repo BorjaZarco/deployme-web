@@ -48,7 +48,7 @@
     data () {
       return {
         activeNotifications: false,
-        userIsLogged : null,
+        userIsLogged : false,
       }
     },
     methods: {
@@ -68,13 +68,18 @@
         this.$sidebar.displaySidebar(false)
       },
       isLogged() {
-        localStorage.token !== "" || localStorage.token !== undefined ? this.userIsLogged = true : this.userIsLogged = false; 
+        localStorage.token !== "" || localStorage.token !== undefined 
+        ? this.userIsLogged = true 
+        : this.userIsLogged = false;
       },
       logout() {
         localStorage.token = "";
         this.isLogged();
         this.$router.push('Landing'); 
       }
+    }, 
+    created () {
+      this.isLogged();
     }
   }
 
