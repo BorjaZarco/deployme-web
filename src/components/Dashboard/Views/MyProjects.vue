@@ -17,7 +17,7 @@
                 <td class="bold">Url project</td>
                 <td class="bold">Actions</td>
               </template>
-              <template slot-scope="{row}">
+              <template slot-scope="{row}" v-if="hasServices">
                 <td>{{row.nameProyect}}</td>
                 <td><a target="_blank" :href="'http://' + row.publicIp">{{row.publicIp}}</a></td>
                 <td><a target="_blank" :href="row.gitUrl">{{row.gitUrl}}</a></td>
@@ -104,7 +104,7 @@ export default {
 
       axios.get(`http://localhost:5000/api/users/${localStorage.username}`, config).then(res => {
         this.tableData.data = [];
-        if(res.data.ec2.length > 0){
+        if(res.data.ec2.length > 0 && Object.keys(res.data.ec2[0]) > 0){
           this.hasServices = true;
           const allInstances = res.data.ec2;
           for(let idx in allInstances){
