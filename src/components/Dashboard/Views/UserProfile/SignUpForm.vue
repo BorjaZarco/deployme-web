@@ -96,7 +96,7 @@
         if (this.badPassword || !this.username || !this.password || !this.email) {
           this.showNotification('Information:','Rellena todos los campos', 5)
         } else {
-          post('http://localhost:5000/api/users', { username: this.username, password: this.password, email: this.email })
+          post('http://54.171.47.46:5000/api/users', { username: this.username, password: this.password, email: this.email })
           .then (res => {
             this.$router.push('login'); 
           })

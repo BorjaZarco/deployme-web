@@ -1,11 +1,11 @@
 <template>
-  <div class="content">
+  <div class="content special-content">
     <div class="row">
       <div class="col-xl-12 col-md-12 hero">
         <img src="static/img/landing-image.jpg">
         <div class="hero-text">
           <h1>Tu creas, nosotros desplegamos</h1>
-          <router-link to="/deploy" class="btn btn-info btn-fill btn-center">
+          <router-link to="/home/deploy" class="btn btn-info btn-fill btn-center">
             Despliega tu código ahora >>
           </router-link>
         </div>
@@ -87,18 +87,23 @@
   }
 </script>
 <style scoped>
-.hero {
-  overflow: hidden;
-  margin: 0 15px 15px 0;
-  position: relative;
-  text-align: center;
-}
+  .hero {
+    overflow: hidden;
+    margin: 0 15px 15px 0;
+    position: relative;
+    text-align: center;
+  }
 
-.hero-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%)
-}
-
+  .hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+  }
+  .special-content{
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  
 </style>
