@@ -54,26 +54,28 @@
     methods: {
       login() {
         if (!this.username || !this.password) {
-          this.showNotification('Information:', 'Comprueba que todos los campos sean correctos', 3);
+          this.showNotification('Warn:', 'Comprueba que todos los campos sean correctos', 3, 'warn');
         } else {
           post('http://localhost:5000/api/login', {username: this.username, password: this.password})
           .then (res => {
             localStorage.token = res.data;
             localStorage.username = this.username;
             this.$router.push('home'); 
+            this.showNotification('Info:', `Bienvenido ${localStorage.username}!`, 3, 'info');
           })
           .catch ( error => {
             (error.response.status === 400)
-            ? this.showNotification('Information:', 'Introduce un usuario y contraseña válidos', 3)
-            : this.showNotification('Information:', 'Se ha producido un error interno, intentalo de nuevo mas tarde', 3);
+            ? this.showNotification('Warn:', 'Introduce un usuario y contraseña válidos', 3, 'warn')
+            : this.showNotification('Error:', 'Se ha producido un error interno, intentalo de nuevo mas tarde', 3, 'error');
           })
         }
       },
-      showNotification(title, body, duration){
+      showNotification(title, body, duration, type){
         this.$notify({
             group: 'notification-group',
             title: title,
             text: body,
+            type: type,
             duration: duration * 1000
         });
       },
