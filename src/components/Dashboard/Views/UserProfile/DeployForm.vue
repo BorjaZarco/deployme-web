@@ -168,7 +168,7 @@ export default {
       const data = {
         ec2: instanceData
       };
-      axios.post(`http://54.171.47.46:5000/api/users/add-instance/${localStorage.username}`,data)
+      axios.post(`http://localhost:5000/api/users/add-instance/${localStorage.username}`,data)
         .then(response => {
           thisRouter.push("my-projects");
           this.deployInProcess = false;

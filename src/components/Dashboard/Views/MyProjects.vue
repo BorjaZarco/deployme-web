@@ -90,7 +90,7 @@ export default {
     },
     deleteInstanceInDb(instanceData){
       const thisRouter = this.$router;
-      axios.delete(`http://54.171.47.46:5000/api/users/delete-instance/${localStorage.username}/${instanceData.instanceId}`).then(response => {
+      axios.delete(`http://localhost:5000/api/users/delete-instance/${localStorage.username}/${instanceData.instanceId}`).then(response => {
         const instanceIdx = this.tableData.data.findIndex(i => i.instanceId == instanceData.instanceId);
         this.tableData.data.splice(instanceIdx, 1);
         this.getInstancesOfBd();
@@ -123,7 +123,7 @@ export default {
         }
       }
 
-      axios.get(`http://54.171.47.46:5000/api/users/${localStorage.username}`, config).then(res => {
+      axios.get(`http://localhost:5000/api/users/${localStorage.username}`, config).then(res => {
         this.tableData.data = [];
         if(res.data.ec2.length > 0){
           this.hasServices = true;
