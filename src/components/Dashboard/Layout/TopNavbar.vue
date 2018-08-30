@@ -77,7 +77,7 @@
       logout() {
         localStorage.token = "";
         this.isLogged();
-        this.$router.push('Landing'); 
+        this.$router.push('Landing');
       }
     }, 
     created () {

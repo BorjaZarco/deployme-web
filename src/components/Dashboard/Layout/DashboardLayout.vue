@@ -2,10 +2,6 @@
   <div class="wrapper">
     <side-bar>
       <mobile-menu slot="content"></mobile-menu>
-      <sidebar-link to="/home/landing">
-        <i class="nc-icon nc-square-pin"></i>
-        <p>Landing</p>
-      </sidebar-link>
       <sidebar-link to="/home/deploy">
         <i class="nc-icon nc-spaceship"></i>
         <p>Deploy</p>
@@ -45,9 +41,9 @@
       toggleSidebar () {
         if (this.$sidebar.showSidebar) {
           this.$sidebar.displaySidebar(false)
-        }
+        } 
       }
-    }
+  }
   }
 
 </script>
