@@ -94,12 +94,22 @@
         if (this.badPassword || !this.username || !this.password || !this.email) {
           this.showNotification('Information:','Rellena todos los campos', 5, 'warn')
         } else {
-          post('http://54.171.47.46:5000/api/users', { username: this.username, password: this.password, email: this.email })
+          post('http://localhost:5000/api/users', { username: this.username, password: this.password, email: this.email })
           .then (res => {
-            this.$router.push('login'); 
+            post('http://localhost:5000/api/login', {username: this.username, password: this.password})
+            .then (res => {
+              localStorage.token = res.data;
+              localStorage.username = this.username;
+              this.$router.push('home'); 
+            })
+            .catch ( error => {
+              this.showNotification('Error:', 'Se ha producido un error interno, intentalo loguearse manualmente', 3, 'error');
+              this.$router.push('login');
+            })
           })
           .catch ( error => {
-            this.showNotification('Information:','Usuario ya registrado', 5, 'info')
+            console.log(error);
+            this.showNotification('Error:','Usuario ya registrado', 5, 'error')
           })      
         }
       },

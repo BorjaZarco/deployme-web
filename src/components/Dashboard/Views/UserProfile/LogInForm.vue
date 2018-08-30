@@ -56,7 +56,7 @@
         if (!this.username || !this.password) {
           this.showNotification('Information:', 'Comprueba que todos los campos sean correctos', 3);
         } else {
-          post('http://54.171.47.46:5000/api/login', {username: this.username, password: this.password})
+          post('http://localhost:5000/api/login', {username: this.username, password: this.password})
           .then (res => {
             localStorage.token = res.data;
             localStorage.username = this.username;
