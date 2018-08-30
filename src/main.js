@@ -26,7 +26,7 @@ function checkLog(){
       authorization : localStorage.token 
     }
   }
-  return axios.get('http://54.171.47.46:5000/api/login' ,config)
+  return axios.get('http://localhost:5000/api/login' ,config)
   .then(res => {
     return true
   }).catch( err => {

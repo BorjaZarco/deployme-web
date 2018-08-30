@@ -94,9 +94,10 @@
         if (this.badPassword || !this.username || !this.password || !this.email) {
           this.showNotification('Warn:','Rellena todos los campos', 5, 'warn')
         } else {
-          post('http://54.171.47.46:5000/api/users', { username: this.username, password: this.password, email: this.email })
+          this.showNotification('Info:', 'Creando cuenta...', 3, 'info');
+          post('http://localhost:5000/api/users', { username: this.username, password: this.password, email: this.email })
           .then (res => {
-            post('http://54.171.47.46:5000/api/login', {username: this.username, password: this.password})
+            post('http://localhost:5000/api/login', {username: this.username, password: this.password})
             .then (res => {
               localStorage.token = res.data;
               localStorage.username = this.username;
