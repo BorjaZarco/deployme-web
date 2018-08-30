@@ -31,8 +31,7 @@
           <fg-input type="password"
                     label="Contraseña"
                     placeholder=""
-                    v-model="password"
-                    @input="updatePassword">
+                    v-model="password">
           </fg-input>
         </div>
       </div>
@@ -46,8 +45,7 @@
           <fg-input type="password"
                     label="Repite Contraseña"
                     placeholder=""
-                    v-model="doubleP"
-                    @input="updateDoubleP">
+                    v-model="doubleP">
           </fg-input>
         </div>
       </div>
@@ -94,31 +92,23 @@
     methods: {
       signup () {
         if (this.badPassword || !this.username || !this.password || !this.email) {
-          this.showNotification('Information:','Rellena todos los campos', 5)
+          this.showNotification('Information:','Rellena todos los campos', 5, 'warn')
         } else {
           post('http://54.171.47.46:5000/api/users', { username: this.username, password: this.password, email: this.email })
           .then (res => {
             this.$router.push('login'); 
           })
           .catch ( error => {
-            this.showNotification('Information:','Usuario ya registrado', 5)
+            this.showNotification('Information:','Usuario ya registrado', 5, 'info')
           })      
         }
       },
-      updateDoubleP (newDP) {
-        this.doubleP = newDP;
-      },
-      updatePassword (newP) {
-        this.password = newP;
-      },
-      checkPassword() {
-        return this.badPassword = password !== this.doubleP
-      },
-      showNotification(title, body, duration){
+      showNotification(title, body, duration, type){
         this.$notify({
             group: 'notification-group',
             title: title,
             text: body,
+            type: type,
             duration: duration * 1000
         });
       },
