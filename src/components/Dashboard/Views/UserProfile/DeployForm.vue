@@ -4,21 +4,49 @@
       <h4 slot="header" class="card-title">Levanta tu proyecto!</h4>
       <form>
         <p class="bold">Introduzca su usuario de GitHub</p>
-        <input type="text" placeholder="Usuario" v-model="user"><button @click="userRepository(user)">Mostrar Repos</button>
-        <select class="repoSelection" v-model="prueba">
+        <div class="row">
+          <div class="col-md-4">
+            <label for="disabledTextInput">Usuario GitHub</label>
+            <input  class="form-control"
+                    type="text"
+                    placeholder="Introduce tu usuario"
+                    v-model="user"
+                    @keypress.enter="userRepository(user)">
+            </input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <button class="btn btn-info btn-fill float-left"
+                    @click="userRepository(user)">
+                    Mostrar Repos
+            </button>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+              <select class="custom-select" v-model="prueba">
+                <option v-for="repo in repository">{{repo}}</option>
+              </select>
+            </div>
+        </div>
+
+        <!-- <select class="repoSelection" v-model="prueba">
           <option v-for="repo in repository">{{repo}}</option>
-        </select>
+        </select> -->
+
+        <!-- <input type="text" placeholder="Usuario" v-model="user"> -->
         
          <!-- <div class="radios-wrapper">
           <div class="radioFront">
             <ul class="lista" @click="EnableFront">
                 <li><input type="radio" name="radio" value="estatica" v-model="service">Web estática</li>
-                 <!--<li><input type="radio" name="radio" value="webpack" v-model="service">Web con webpack</li>-->
+                 <!<li><input type="radio" name="radio" value="webpack" v-model="service">Web con webpack</li>-->
               <!-- </ul>
           </div>
           <div class="radioBack">
             <ul class="lista" @click="EnableBack">
-                <!--<li><input type="radio" name="radio" value="php" v-model="service">Php</li>-->
+                <!<li><input type="radio" name="radio" value="php" v-model="service">Php</li>-->
                 <!--<li><input type="radio" name="radio" value="node" v-model="service">Node</li>-->
               <!-- </ul>
           </div>
@@ -54,9 +82,9 @@
           </div>
         </div> -->
 
-         <div class="row justify-content-center" v-if="!validGit">
+        <!-- <div class="row justify-content-center" v-if="!validGit">
           <p class="text-danger">Introduce un usuario válido</p>
-        </div>  
+        </div>   -->
 
         <div class="text-center">
           <button class="btn btn-info btn-fill float-right button"
@@ -298,7 +326,15 @@ export default {
 //};
 }
 </script>
-  <style scoped>
+
+<style scoped>
+.custom-select option {
+  width: 555px;
+}
+
+fg-input {
+  margin: 0;
+}
 .radios-wrapper {
   position: relative;
   overflow: hidden;

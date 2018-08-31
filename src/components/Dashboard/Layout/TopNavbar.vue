@@ -76,8 +76,9 @@
       },
       logout() {
         localStorage.token = "";
+        localStorage.username = "";
         this.isLogged();
-        this.$router.push('Landing');
+        this.$router.push('home'); 
       }
     }, 
     created () {

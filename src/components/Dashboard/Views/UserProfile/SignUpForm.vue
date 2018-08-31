@@ -102,7 +102,7 @@
               localStorage.token = res.data;
               localStorage.username = this.username;
               this.$router.push('home'); 
-              this.showNotification('Info:', `Bienvenido ${localStorage.username}!`, 3, 'info');
+              this.showNotification('Info:', `Bienvenido ${localStorage.username}!, tu sesión durará 30 minutos`, 3, 'info');
             })
             .catch ( error => {
               this.showNotification('Error:', 'Se ha producido un error interno, intentalo loguearse manualmente', 3, 'error');

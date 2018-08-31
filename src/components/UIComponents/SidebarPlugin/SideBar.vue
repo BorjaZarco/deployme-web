@@ -7,9 +7,9 @@
       <div class="logo">
         <a href="#" class="simple-text">
             <div class="logo-img">
-                <img src="static/img/vue-logo.png" alt="">
+                <img src="static/img/deployme-logo.png" alt="">
             </div>
-          {{title}}
+          {{this.navbarTitle}}
         </a>
       </div>
 
@@ -37,10 +37,15 @@
     components: {
       SidebarLink
     },
+    data () {
+      return {
+        dmtitle: "DeployMe"
+      }
+    },
     props: {
       title: {
         type: String,
-        default: 'DeployMe'
+        default: this.navbarTitle
       },
       backgroundColor: {
         type: String,
@@ -80,6 +85,13 @@
       sidebarStyle () {
         return {
           backgroundImage: `url(${this.backgroundImage})`
+        }
+      },
+      navbarTitle: function () {
+        if (localStorage.username.length < 1) {
+          return "DeployMe"
+        } else {
+          return localStorage.username
         }
       }
     }
